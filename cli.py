@@ -1,29 +1,23 @@
-"""CLI for rendering ASCII map from CSV coordinates."""
+"""CLI for rendering ASCII maps from CSV coordinates."""
 
 from __future__ import annotations
 
 import argparse
-import csv
 from pathlib import Path
 
-from map_draw.renderer import render_ascii_map
-
-
-def load_points(path: Path) -> list[tuple[str, int, int]]:
-    points: list[tuple[str, int, int]] = []
-    with path.open("r", encoding="utf-8", newline="") as handle:
-        reader = csv.DictReader(handle)
-        for row in reader:
-            points.append((row["name"], int(row["x"]), int(row["y"])))
-    return points
+from map_draw.renderer import load_points_from_csv, render_ascii_map
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Render ASCII map from coordinate CSV.")
-    parser.add_argument("--data", type=Path, required=True)
+    parser = argparse.ArgumentParser(description="Render an ASCII map from a CSV file.")
+    parser.add_argument("--data", type=Path, required=True, help="CSV file with label,x,y or label,lat,lon.")
+    parser.add_argument("--width", type=int, default=40, help="Total map width including border.")
+    parser.add_argument("--height", type=int, default=16, help="Total map height including border.")
+    parser.add_argument("--draw-path", action="store_true", help="Draw a path between points in file order.")
     args = parser.parse_args()
-    points = load_points(args.data)
-    print(render_ascii_map(points))
+
+    points = load_points_from_csv(args.data)
+    print(render_ascii_map(points, width=args.width, height=args.height, draw_path=args.draw_path))
     return 0
 
 

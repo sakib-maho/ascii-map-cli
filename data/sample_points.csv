@@ -1,4 +1,6 @@
-name,x,y
-Dhaka,12,8
-Sylhet,25,12
-Chittagong,30,5
+label,lat,lon
+Dhaka,23.8103,90.4125
+Sylhet,24.8949,91.8687
+Chattogram,22.3569,91.7832
+Rajshahi,24.3745,88.6042
+Khulna,22.8456,89.5403
